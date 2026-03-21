@@ -21,4 +21,5 @@ export interface Tool {
   category: Category;
   icon?: string;
   isFavorite?: boolean;
+ 
 }
