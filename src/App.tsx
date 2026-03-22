@@ -5,13 +5,19 @@ import Hero from './components/Hero';
 import ToolCard from './components/ToolCard';
 import SearchFilter from './components/SearchFilter';
 import { toolsService } from './services/toolsService';
+import { tools as initialTools } from './data/tools';
 import type { Category, Tool } from './types/tool';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import SobreMiPage from './pages/about';
 
 function App() {
-  const [tools, setTools] = useState<Tool[]>(() => toolsService.getAll());
+  // Cargar directamente desde el servicio para evitar el frame vacío
+  const [tools, setTools] = useState<Tool[]>(() => {
+    const saved = toolsService.getAll();
+    return saved.length > 0 ? saved : initialTools;
+  });
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Category | 'All'>('All');
 
@@ -102,6 +108,8 @@ function App() {
             </>
           } />
           <Route path="/about" element={<SobreMiPage tools={tools} />} />
+          {/* Ruta de respaldo para cualquier otra URL */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
 

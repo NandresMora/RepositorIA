@@ -4,13 +4,20 @@ import type { Tool } from "../types/tool";
 const STORAGE_KEY = 'tools';
 
 export const loadTools = (): Tool[] => {
+  if (typeof window === 'undefined') return initialTools;
+  
   const toolsJSON = localStorage.getItem(STORAGE_KEY);
   // Si no hay herramientas en localStorage, guardar las herramientas predeterminadas
   if (!toolsJSON) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(initialTools));
     return initialTools;
   }
-  return JSON.parse(toolsJSON);
+  try {
+    return JSON.parse(toolsJSON);
+  } catch (e) {
+    console.error("Error parsing tools from localStorage", e);
+    return initialTools;
+  }
 };
 
 export const saveTools = (toolsToSave: Tool[]): void => {
