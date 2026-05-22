@@ -1,25 +1,16 @@
-export type Category = 
-  | 'LLM' 
-  | 'Image Generation' 
-  | 'Coding' 
-  | 'Productivity' 
-  | 'Audio/Video' 
-  | 'Design' 
-  | 'Research' 
-  | 'DevOps'
-  | 'Testing/APIs'
-  | 'Diagrams'
-  | 'Automation'
-  | 'Cloud/Deploy'
-  | 'Other';
+export type Pillar = 'Study' | 'Work' | 'Business';
+
+export type Category = string;
 
 export interface Tool {
   id: string;
   name: string;
   description: string;
+  useCase?: string;
   url: string;
+  pillar: Pillar;
   category: Category;
+  gifUrl?: string;
   icon?: string;
   isFavorite?: boolean;
- 
 }

@@ -1,87 +1,94 @@
 import { useState } from 'react';
-import { ExternalLink, Search, Sparkles } from 'lucide-react';
+import { ExternalLink, Search, Cpu, LayoutGrid, Tag } from 'lucide-react';
 import type { Tool } from '../types/tool';
 import { motion, AnimatePresence } from 'framer-motion';
+import { normalizeString } from '../utils/stringUtils';
 
 interface Props {
   tools: Tool[];
 }
 
-const CATEGORY_COLORS: Record<string, string> = {
-  'LLM': 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
-  'Coding': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-  'DevOps': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  'Cloud/Deploy': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
-  'Automation': 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-  'Testing/APIs': 'bg-rose-500/10 text-rose-400 border-rose-500/20',
-  'Design': 'bg-pink-500/10 text-pink-400 border-pink-500/20',
-  'Diagrams': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  'Productivity': 'bg-teal-500/10 text-teal-400 border-teal-500/20',
-  'Research': 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-  'Image Generation': 'bg-violet-500/10 text-violet-400 border-violet-500/20',
-  'Audio/Video': 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20',
-  'Other': 'bg-slate-500/10 text-slate-400 border-slate-500/20',
-};
-
-export default function SobreMiPage({ tools }: Props) {
+export default function MetricsPage({ tools }: Props) {
   const [search, setSearch] = useState('');
 
-  const filtered = tools.filter(tool =>
-    tool.name.toLowerCase().includes(search.toLowerCase()) ||
-    tool.description.toLowerCase().includes(search.toLowerCase()) ||
-    tool.category.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = tools.filter(tool => {
+    const normalizedQuery = normalizeString(search);
+    return (
+      normalizeString(tool.name).includes(normalizedQuery) ||
+      normalizeString(tool.description).includes(normalizedQuery) ||
+      normalizeString(tool.category).includes(normalizedQuery) ||
+      normalizeString(tool.pillar).includes(normalizedQuery)
+    );
+  });
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-12">
-      {/* Hero Section para la página About */}
-      <div className="mb-12 text-center">
+    <main className="max-w-6xl mx-auto px-4 py-16">
+      {/* Header Section */}
+      <div className="mb-16 text-center">
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center rounded-full bg-primary-500/10 px-3 py-1 text-xs font-semibold leading-6 text-primary-400 ring-1 ring-inset ring-primary-400/20 mb-4"
+          className="inline-flex items-center rounded bg-primary-600/10 border border-primary-500/20 px-3 py-1 text-[10px] font-bold font-mono uppercase tracking-[0.2em] text-primary-500 mb-6"
         >
-          <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-          <span>Repositorio de Herramientas</span>
+          <Cpu className="mr-2 h-3.5 w-3.5" />
+          <span>Technical Directory v1.0</span>
         </motion.div>
-        <h1 className="text-4xl font-bold text-slate-100 mb-4">Directorio Completo</h1>
-        <p className="text-slate-400 max-w-2xl mx-auto">
-          Gestiona y consulta todas tus plataformas favoritas desde una vista de lista rápida y optimizada.
+        <h1 className="text-4xl font-extrabold text-slate-100 mb-4 font-mono uppercase tracking-tight">System <span className="text-primary-600">Inventory</span></h1>
+        <p className="text-slate-500 max-w-2xl mx-auto font-mono text-xs uppercase tracking-widest leading-relaxed">
+          Full technical registry of cataloged tools, frameworks, and infrastructure assets.
         </p>
       </div>
 
-      {/* Buscador */}
-      <div className="relative mb-8 max-w-2xl mx-auto">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-        <input
-          type="text"
-          placeholder="Filtrar por nombre, descripción o categoría..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 bg-surface-800 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all shadow-xl"
-        />
+      {/* Search & Stats Bar */}
+      <div className="flex flex-col md:flex-row gap-6 mb-12 items-center justify-between bg-surface-800/50 p-6 rounded-xl border border-slate-700/30">
+        <div className="relative w-full md:max-w-xl">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-500" />
+          <input
+            type="text"
+            placeholder="FILTER BY COMPONENT, PILLAR OR TECH STACK..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 bg-surface-900 border border-slate-700 rounded text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-1 focus:ring-primary-600 transition-all font-mono text-[11px] uppercase tracking-wider"
+          />
+        </div>
+        
+        <div className="flex gap-8">
+          <div className="text-center">
+            <div className="text-xl font-bold text-slate-100 font-mono">{tools.length}</div>
+            <div className="text-[9px] font-bold text-slate-600 font-mono uppercase tracking-widest">Total Assets</div>
+          </div>
+          <div className="text-center">
+            <div className="text-xl font-bold text-primary-500 font-mono">{new Set(tools.map(t => t.category)).size}</div>
+            <div className="text-[9px] font-bold text-slate-600 font-mono uppercase tracking-widest">Modules</div>
+          </div>
+          <div className="text-center">
+            <div className="text-xl font-bold text-slate-100 font-mono">3</div>
+            <div className="text-[9px] font-bold text-slate-600 font-mono uppercase tracking-widest">Pillars</div>
+          </div>
+        </div>
       </div>
 
-      {/* Contenedor de la lista */}
-      <div className="bg-surface-800 rounded-2xl border border-slate-700/50 overflow-hidden shadow-2xl">
-        {/* Header de la tabla (solo Desktop) */}
-        <div className="hidden md:grid grid-cols-12 px-6 py-4 bg-slate-900/50 border-b border-slate-700/50">
-          <span className="col-span-1 text-xs font-bold text-slate-500 uppercase tracking-widest">#</span>
-          <span className="col-span-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Herramienta</span>
-          <span className="col-span-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Categoría</span>
-          <span className="col-span-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Acción</span>
+      {/* Registry Table */}
+      <div className="bg-surface-800 rounded-xl border border-slate-700/50 overflow-hidden shadow-2xl">
+        {/* Table Header */}
+        <div className="hidden md:grid grid-cols-12 px-8 py-4 bg-surface-900 border-b border-slate-700/50">
+          <span className="col-span-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">UID</span>
+          <span className="col-span-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">Component Name</span>
+          <span className="col-span-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">Pillar Domain</span>
+          <span className="col-span-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono text-center">Technical Category</span>
+          <span className="col-span-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono text-right">Access</span>
         </div>
 
-        {/* Filas */}
+        {/* Table Rows */}
         <div className="divide-y divide-slate-700/30">
           <AnimatePresence mode="popLayout">
             {filtered.length === 0 ? (
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="py-20 text-center"
+                className="py-24 text-center bg-surface-900/20"
               >
-                <p className="text-slate-500 text-sm">No se encontraron herramientas que coincidan con tu búsqueda.</p>
+                <p className="text-slate-600 font-mono text-[10px] uppercase tracking-[0.3em]">No components found in current registry</p>
               </motion.div>
             ) : (
               filtered.map((tool, index) => (
@@ -91,45 +98,53 @@ export default function SobreMiPage({ tools }: Props) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   key={tool.id}
-                  className="grid grid-cols-1 md:grid-cols-12 px-6 py-4 items-center hover:bg-slate-700/20 transition-all group"
+                  className="grid grid-cols-1 md:grid-cols-12 px-8 py-5 items-center hover:bg-primary-600/5 transition-all group border-l-2 border-l-transparent hover:border-l-primary-600"
                 >
-                  {/* Número (Desktop) */}
-                  <span className="hidden md:block col-span-1 text-xs text-slate-600 font-mono font-bold">
-                    {String(index + 1).padStart(2, '0')}
+                  {/* UID */}
+                  <span className="hidden md:block col-span-1 text-[10px] text-slate-600 font-mono">
+                    #{String(index + 1).padStart(3, '0')}
                   </span>
 
-                  {/* Info Principal */}
-                  <div className="col-span-12 md:col-span-5 flex items-center gap-4 mb-4 md:mb-0">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600/20 to-primary-400/10 border border-primary-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                      <span className="text-primary-400 text-sm font-black">
-                        {tool.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
+                  {/* Name & Desc */}
+                  <div className="col-span-12 md:col-span-4 flex items-center gap-4 mb-4 md:mb-0">
                     <div className="min-w-0">
-                      <h3 className="text-slate-100 text-base font-bold truncate group-hover:text-primary-400 transition-colors">
+                      <h3 className="text-slate-100 text-sm font-bold font-mono uppercase tracking-tight group-hover:text-primary-500 transition-colors">
                         {tool.name}
                       </h3>
-                      <p className="text-slate-500 text-xs line-clamp-1">{tool.description}</p>
+                      <p className="text-slate-500 text-[10px] line-clamp-1 mt-0.5">{tool.description}</p>
                     </div>
                   </div>
 
-                  {/* Categoría */}
-                  <div className="col-span-6 md:col-span-3 flex md:justify-center">
-                    <span className={`text-[10px] px-3 py-1 rounded-lg border font-bold uppercase tracking-wider ${CATEGORY_COLORS[tool.category] ?? CATEGORY_COLORS['Other']}`}>
-                      {tool.category}
-                    </span>
+                  {/* Pillar */}
+                  <div className="col-span-6 md:col-span-2">
+                    <div className="flex items-center gap-2">
+                      <LayoutGrid className="w-3 h-3 text-slate-700" />
+                      <span className="text-[10px] font-bold text-slate-400 font-mono uppercase">
+                        {tool.pillar}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Acción */}
-                  <div className="col-span-6 md:col-span-3 flex justify-end">
+                  {/* Category */}
+                  <div className="col-span-6 md:col-span-3 flex md:justify-center">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded bg-surface-900 border border-slate-700/50">
+                      <Tag className="w-3 h-3 text-primary-600" />
+                      <span className="text-[9px] font-bold text-slate-300 font-mono uppercase tracking-wider">
+                        {tool.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action */}
+                  <div className="col-span-12 md:col-span-2 flex justify-end mt-4 md:mt-0">
                     <a
                       href={tool.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-xs font-bold text-primary-400 hover:text-white bg-primary-500/10 hover:bg-primary-600 px-4 py-2 rounded-lg transition-all active:scale-95"
+                      className="flex items-center gap-2 text-[10px] font-bold font-mono uppercase tracking-widest text-slate-400 hover:text-white bg-surface-900 border border-slate-700 hover:border-primary-600 px-4 py-2 rounded transition-all active:scale-95"
                     >
-                      <span>Abrir</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>Connect</span>
+                      <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
                 </motion.div>
@@ -139,17 +154,15 @@ export default function SobreMiPage({ tools }: Props) {
         </div>
       </div>
 
-      {/* Footer contador */}
-      <div className="mt-6 flex justify-between items-center px-2">
-        <p className="text-xs text-slate-600">
-          Mostrando <span className="text-slate-400 font-bold">{filtered.length}</span> de {tools.length} herramientas
+      {/* Footer Info */}
+      <div className="mt-8 flex justify-between items-center px-4 font-mono text-[9px] uppercase tracking-[0.2em] text-slate-600">
+        <p>
+          Showing <span className="text-primary-500 font-bold">{filtered.length}</span> of {tools.length} cataloged assets
         </p>
-        <button 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="text-xs text-slate-500 hover:text-primary-400 font-bold transition-colors"
-        >
-          Volver arriba ↑
-        </button>
+        <div className="flex gap-4">
+          <span>System Status: Optimal</span>
+          <span className="w-1 h-1 rounded-full bg-green-500 mt-1" />
+        </div>
       </div>
     </main>
   );

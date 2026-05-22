@@ -6,10 +6,13 @@ import ToolCard from './components/ToolCard';
 import SearchFilter from './components/SearchFilter';
 import { toolsService } from './services/toolsService';
 import { tools as initialTools } from './data/tools';
-import type { Category, Tool } from './types/tool';
+import type { Category, Tool, Pillar } from './types/tool';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import SobreMiPage from './pages/about';
+import CategoriesPage from './pages/CategoriesPage';
+import { normalizeString } from './utils/stringUtils';
+import { useEffect } from 'react';
 
 function App() {
   // Cargar directamente desde el servicio para evitar el frame vacío
@@ -18,8 +21,16 @@ function App() {
     return saved.length > 0 ? saved : initialTools;
   });
 
+  const location = useLocation();
+
+  // Refrescar herramientas cuando cambia la ubicación (por si se editaron en CategoriesPage)
+  useEffect(() => {
+    setTools([...toolsService.getAll()]);
+  }, [location.pathname]);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Category | 'All'>('All');
+  const [selectedPillar, setSelectedPillar] = useState<Pillar | 'All'>('All');
 
   const handleAgregarTool = (nuevaTool: Omit<Tool, "id">) => {
     toolsService.add(nuevaTool);
@@ -37,17 +48,23 @@ function App() {
   };
 
   const filteredTools = useMemo(() => {
+    const normalizedQuery = normalizeString(searchQuery);
+
     return tools.filter((tool) => {
       const matchesSearch = 
-        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+        normalizeString(tool.name).includes(normalizedQuery) ||
+        normalizeString(tool.description).includes(normalizedQuery) ||
+        (tool.useCase && normalizeString(tool.useCase).includes(normalizedQuery));
       
       const matchesCategory = 
         selectedCategory === 'All' || tool.category === selectedCategory;
 
-      return matchesSearch && matchesCategory;
+      const matchesPillar = 
+        selectedPillar === 'All' || tool.pillar === selectedPillar;
+
+      return matchesSearch && matchesCategory && matchesPillar;
     });
-  }, [tools, searchQuery, selectedCategory]);
+  }, [tools, searchQuery, selectedCategory, selectedPillar]);
 
   const sortedTools = useMemo(() => {
     return [...filteredTools].sort((a, b) => {
@@ -58,8 +75,10 @@ function App() {
   }, [filteredTools]);
 
   return (
-    <div className="min-h-screen bg-surface-900 text-slate-100 flex flex-col">
-      <Navbar onAgregarTool={handleAgregarTool} />
+    <div className="min-h-screen bg-background text-on-background flex flex-col">
+      <Navbar 
+        onAgregarTool={handleAgregarTool} 
+      />
       
       <main className="flex-grow">
         <Routes>
@@ -68,13 +87,17 @@ function App() {
               <Hero />
               
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-                {/* Contenedor Sticky para el Filtro */}
-                <div className="sticky top-16 z-40 py-4 bg-surface-900/95 backdrop-blur-sm -mx-4 px-4 sm:mx-0 sm:px-0">
+               
+
+                {/* Contenedor del Filtro (Sin sticky) */}
+                <div className="py-4 bg-background -mx-4 px-4 sm:mx-0 sm:px-0">
                   <SearchFilter 
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
                     selectedCategory={selectedCategory}
                     setSelectedCategory={setSelectedCategory}
+                    selectedPillar={selectedPillar}
+                    setSelectedPillar={setSelectedPillar}
                   />
                 </div>
 
@@ -108,16 +131,17 @@ function App() {
             </>
           } />
           <Route path="/about" element={<SobreMiPage tools={tools} />} />
+          <Route path="/categories" element={<CategoriesPage />} />
           {/* Ruta de respaldo para cualquier otra URL */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
 
-      <footer className="border-t border-slate-800 bg-surface-900 py-12 mt-auto">
+      <footer className="border-t border-surface-variant bg-surface-container-low py-12 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-slate-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} RepositorIA. Tu repositorio personal de herramientas de IA.</p>
-            <p className="mt-2 text-xs font-medium text-primary-400/80 italic">Página creada por Sinnexys.</p>
+          <div className="text-center text-secondary text-sm">
+            <p>&copy; {new Date().getFullYear()} RepositorIA v1.0. Engineering Resource Management.</p>
+            <p className="mt-2 text-[10px] font-bold uppercase tracking-widest text-primary italic">Precision Engineered by Sinnexys.</p>
           </div>
         </div>
       </footer>

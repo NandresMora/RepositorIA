@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# RepositorIA 🤖
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+RepositorIA is a professional, high-performance technical asset repository built for engineers and architects. It features a minimalist **Dark Matte** aesthetic with technical neon accents, providing a streamlined experience for discovering and managing tools across different engineering domains.
 
-Currently, two official plugins are available:
+## 🚀 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Technical Hierarchy Engine**: Organize assets by Engineering Pillars (Study, Work, Business) and Technical Units.
+- **Smart Discovery**: Real-time global search with accent normalization (ignores tildes and common typos).
+- **Minimalist UX**: 
+  - Hover-based dropdowns for technical categories to reduce visual clutter.
+  - Sidebar-integrated navigation for structural management.
+  - Zero-static layout: everything responds to user interaction.
+- **Asset Management**: Unified registry for technical tools with support for Base64 image uploads (no external URL dependencies).
+- **Performance Optimized**: Built with Vite + React + TypeScript, ensuring minimal bundle size and rapid HMR.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework**: React 18 (Vite)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS (Custom Dark Matte Theme)
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Persistence**: Local Storage Service Layer
 
-## Expanding the ESLint configuration
+## 📂 Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/
+├── assets/             # Static visual assets
+├── components/         # Reusable UI components (Navbar, ToolCard, etc.)
+├── data/               # Initial seed data for the repository
+├── pages/              # Main view components (Dashboard, Category Engine)
+├── services/           # Business logic & persistence layers
+├── types/              # TypeScript interfaces and type definitions
+├── utils/              # Helper functions (Normalization, etc.)
+└── App.tsx             # Root application logic
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚙️ Installation & Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Setup
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Local Execution
+Start the development server:
+```bash
+npm run dev
 ```
+
+### Build for Production
+Generate a production-ready build in the `dist/` directory:
+```bash
+npm run build
+```
+
+## 🌐 Deployment
+
+The project is configured for automated deployment via GitHub Actions (see `.github/workflows/deploy.yml`). It can be hosted on platforms like Vercel, Netlify, or GitHub Pages.
+
+### Manual Deployment
+Upload the contents of the `dist/` folder to any static hosting provider.
+
+---
+
+**Developed for the next generation of technical repository management.**

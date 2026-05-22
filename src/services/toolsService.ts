@@ -27,8 +27,20 @@ export const saveTools = (toolsToSave: Tool[]): void => {
 let currentTools: Tool[] = loadTools();
 
 export const toolsService = {
-  getAll: (): Tool[] => {
-    return currentTools;
+  getAll(): Tool[] {
+  const saved = loadTools(); // lo que hay en localStorage
+  
+  // Merge: toma los guardados + agrega los de initialTools que no existan
+  const savedIds = new Set(saved.map(t => t.id));
+  const newFromSource = initialTools.filter(t => !savedIds.has(t.id));
+  
+    if (newFromSource.length > 0) {
+      const merged = [...saved, ...newFromSource];
+      saveTools(merged); // persiste el merge
+      return merged;
+    }
+  
+  return saved;
   },
 
   add: (nuevoTool: Omit<Tool, "id">): Tool => {
@@ -44,6 +56,21 @@ export const toolsService = {
   delete: (id: string): void => {
     currentTools = currentTools.filter(tool => tool.id !== id);
     saveTools(currentTools);
+  },
+
+  update: (id: string, updatedTool: Partial<Tool>): Tool | undefined => {
+    let foundTool: Tool | undefined;
+    currentTools = currentTools.map(tool => {
+      if (tool.id === id) {
+        foundTool = { ...tool, ...updatedTool };
+        return foundTool;
+      }
+      return tool;
+    });
+    if (foundTool) {
+      saveTools(currentTools);
+    }
+    return foundTool;
   },
 
   toggleFavorite: (id: string): void => {
