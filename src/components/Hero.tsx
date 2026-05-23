@@ -25,19 +25,19 @@ const Hero = () => {
           </div>
           
           <h1 className="text-4xl font-extrabold tracking-tight text-on-surface sm:text-7xl font-geist ">
-            RepositorIA <span className="text-secondary drop-shadow-[0_0_15px_rgba(188,19,254,0.3]">ENGINNER</span>
+            RepositorIA <span className="text-secondary drop-shadow-[0_0_15px_rgba(188,19,254,0.3]">ENGINEER</span>
           </h1>
           
           <p className="mt-6 text-base leading-relaxed text-on-surface-variant max-w-3xl mx-auto font-medium font-geist">
-           Repositorio de herramientas con enfoque de productividad y cumplir actividades relacionadas a Sistemas <span className="text-primary font-bold uppercase drop-shadow-[0_0_5px_rgba(0,242,255,0.3)]">Study</span>, <span className="text-secondary font-bold uppercase drop-shadow-[0_0_5px_rgba(188,19,254,0.3)]">Work</span>, and <span className="text-tertiary font-bold uppercase drop-shadow-[0_0_5px_rgba(57,255,20,0.3)]">Business</span> domains.
+           Repositorio de herramientas con enfoque de productividad para optimizar actividades de <span className="text-primary font-bold uppercase drop-shadow-[0_0_5px_rgba(0,242,255,0.3)]">Estudio</span>, <span className="text-secondary font-bold uppercase drop-shadow-[0_0_5px_rgba(188,19,254,0.3)]">Trabajo</span> y <span className="text-tertiary font-bold uppercase drop-shadow-[0_0_5px_rgba(57,255,20,0.3)]">Negocios</span>.
           </p>
 
           <div className="mt-8 flex items-center justify-center gap-4 text-[10px] font-bold font-geist text-outline uppercase tracking-[0.2em]">
-            <span className="hover:text-primary transition-colors cursor-default">Systems Engineering</span>
+            <span className="hover:text-primary transition-colors cursor-default">Ingeniería de Sistemas</span>
             <span className="w-1.5 h-1.5 rounded-full bg-primary/30 shadow-[0_0_5px_rgba(0,242,255,0.5)]" />
             <span className="hover:text-secondary transition-colors cursor-default">DevOps</span>
             <span className="w-1.5 h-1.5 rounded-full bg-primary/30 shadow-[0_0_5px_rgba(0,242,255,0.5)]" />
-            <span className="hover:text-tertiary transition-colors cursor-default">AI Architecture</span>
+            <span className="hover:text-tertiary transition-colors cursor-default">Arquitectura IA</span>
           </div>
         </div>
       </div>

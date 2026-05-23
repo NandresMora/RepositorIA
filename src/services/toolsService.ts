@@ -27,56 +27,77 @@ export const saveTools = (toolsToSave: Tool[]): void => {
 let currentTools: Tool[] = loadTools();
 
 export const toolsService = {
-  getAll(): Tool[] {
-  const saved = loadTools(); // lo que hay en localStorage
-  
-  // Merge: toma los guardados + agrega los de initialTools que no existan
-  const savedIds = new Set(saved.map(t => t.id));
-  const newFromSource = initialTools.filter(t => !savedIds.has(t.id));
-  
-    if (newFromSource.length > 0) {
-      const merged = [...saved, ...newFromSource];
-      saveTools(merged); // persiste el merge
-      return merged;
-    }
-  
-  return saved;
-  },
-
-  add: (nuevoTool: Omit<Tool, "id">): Tool => {
-    const tool: Tool = {
-      ...nuevoTool,
-      id: `tool-${Date.now()}`,
-    };
-    currentTools.push(tool);
-    saveTools(currentTools);
-    return tool;
-  },
-
-  delete: (id: string): void => {
-    currentTools = currentTools.filter(tool => tool.id !== id);
-    saveTools(currentTools);
-  },
-
-  update: (id: string, updatedTool: Partial<Tool>): Tool | undefined => {
-    let foundTool: Tool | undefined;
-    currentTools = currentTools.map(tool => {
-      if (tool.id === id) {
-        foundTool = { ...tool, ...updatedTool };
-        return foundTool;
-      }
-      return tool;
+  async getAll(): Promise<Tool[]> {
+    // Simulamos carga asíncrona de DB
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const saved = loadTools();
+        const savedIds = new Set(saved.map(t => t.id));
+        const newFromSource = initialTools.filter(t => !savedIds.has(t.id));
+        
+        if (newFromSource.length > 0) {
+          const merged = [...saved, ...newFromSource];
+          saveTools(merged);
+          currentTools = merged;
+          resolve(merged);
+        } else {
+          currentTools = saved;
+          resolve(saved);
+        }
+      }, 500); // Delay de red simulado
     });
-    if (foundTool) {
-      saveTools(currentTools);
-    }
-    return foundTool;
   },
 
-  toggleFavorite: (id: string): void => {
-    currentTools = currentTools.map(tool => 
-      tool.id === id ? { ...tool, isFavorite: !tool.isFavorite } : tool
-    );
-    saveTools(currentTools);
+  async add(nuevoTool: Omit<Tool, "id">): Promise<Tool> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const tool: Tool = {
+          ...nuevoTool,
+          id: `tool-${Date.now()}`,
+        };
+        currentTools = [...currentTools, tool];
+        saveTools(currentTools);
+        resolve(tool);
+      }, 300);
+    });
+  },
+
+  async delete(id: string): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        currentTools = currentTools.filter(tool => tool.id !== id);
+        saveTools(currentTools);
+        resolve();
+      }, 300);
+    });
+  },
+
+  async update(id: string, updatedTool: Partial<Tool>): Promise<Tool | undefined> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let found: Tool | undefined;
+        currentTools = currentTools.map(tool => {
+          if (tool.id === id) {
+            found = { ...tool, ...updatedTool };
+            return found;
+          }
+          return tool;
+        });
+        if (found) saveTools(currentTools);
+        resolve(found);
+      }, 300);
+    });
+  },
+
+  async toggleFavorite(id: string): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        currentTools = currentTools.map(tool => 
+          tool.id === id ? { ...tool, isFavorite: !tool.isFavorite } : tool
+        );
+        saveTools(currentTools);
+        resolve();
+      }, 200);
+    });
   }
 };

@@ -1,5 +1,5 @@
 import type { Pillar } from "../types/tool";
-import { toolsService } from "./toolsService";
+import { toolsService, loadTools } from "./toolsService";
 
 export interface CategoryGroup {
   id: string;
@@ -7,7 +7,7 @@ export interface CategoryGroup {
   icon: string;
   pillar: Pillar;
   description: string;
-  toolCount?: number; // Optional as it's calculated
+  toolCount?: number; // Opcional ya que se calcula dinámicamente
 }
 
 const STORAGE_KEY = 'categories_groups';
@@ -18,26 +18,27 @@ const defaultGroups: CategoryGroup[] = [
     name: 'LLM & AI',
     icon: 'psychology',
     pillar: 'Work',
-    description: 'Large Language Models and AI integration tools.',
+    description: 'Modelos de lenguaje y herramientas de integración de IA.',
   },
   {
     id: 'cat-2',
     name: 'DevOps & CI/CD',
     icon: 'settings_suggest',
     pillar: 'Work',
-    description: 'Infrastructure automation and deployment pipelines.',
+    description: 'Automatización de infraestructura y tuberías de despliegue.',
   },
   {
     id: 'cat-3',
-    name: 'Academic Research',
+    name: 'Investigación Académica',
     icon: 'school',
     pillar: 'Study',
-    description: 'Tools for theoretical study and academic documentation.',
+    description: 'Herramientas para el estudio teórico y documentación académica.',
   }
 ];
 
 export const categoryService = {
-  getAll: (): CategoryGroup[] => {
+  // Versión síncrona para carga inicial rápida si es necesario
+  getAllSync: (): CategoryGroup[] => {
     const saved = localStorage.getItem(STORAGE_KEY);
     let groups: CategoryGroup[];
     
@@ -53,27 +54,49 @@ export const categoryService = {
       }
     }
 
-    // Calculate dynamic toolCount
-    const tools = toolsService.getAll();
+    const tools = loadTools(); // Usamos loadTools() que es síncrono
     return groups.map(group => ({
       ...group,
-      toolCount: tools.filter(t => t.category === group.name || (t as any).categoryId === group.id).length
+      toolCount: tools.filter(t => t.category === group.name).length
     }));
   },
 
-  add: (group: Omit<CategoryGroup, 'id' | 'toolCount'>): CategoryGroup => {
-    const groups = categoryService.getAll();
+  getAll: async (): Promise<CategoryGroup[]> => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    let groups: CategoryGroup[];
+    
+    if (!saved) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultGroups));
+      groups = defaultGroups;
+    } else {
+      try {
+        groups = JSON.parse(saved);
+      } catch (e) {
+        console.error("Error parsing categories from localStorage", e);
+        groups = defaultGroups;
+      }
+    }
+
+    const tools = await toolsService.getAll();
+    return groups.map(group => ({
+      ...group,
+      toolCount: tools.filter(t => t.category === group.name).length
+    }));
+  },
+
+  add: async (group: Omit<CategoryGroup, 'id' | 'toolCount'>): Promise<CategoryGroup> => {
+    const groups = await categoryService.getAll();
     const newGroup: CategoryGroup = {
       ...group,
       id: `cat-${Date.now()}`,
     };
-    groups.push(newGroup);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(groups.map(({toolCount, ...rest}) => rest)));
+    const groupsToSave = [...groups, newGroup];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(groupsToSave.map(({toolCount, ...rest}) => rest)));
     return newGroup;
   },
 
-  delete: (id: string): void => {
-    const groups = categoryService.getAll().filter(g => g.id !== id);
+  delete: async (id: string): Promise<void> => {
+    const groups = (await categoryService.getAll()).filter(g => g.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(groups.map(({toolCount, ...rest}) => rest)));
   }
 };

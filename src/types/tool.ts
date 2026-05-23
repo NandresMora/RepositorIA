@@ -10,6 +10,7 @@ export interface Tool {
   url: string;
   pillar: Pillar;
   category: Category;
+  tags?: string[];
   gifUrl?: string;
   icon?: string;
   isFavorite?: boolean;

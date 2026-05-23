@@ -1,4 +1,4 @@
-import { ExternalLink, Star, Trash2, Info } from 'lucide-react';
+import { ExternalLink, Star, Trash2, Info, Edit3 } from 'lucide-react';
 import type { Tool } from '../types/tool';
 import { motion } from 'framer-motion';
 
@@ -6,6 +6,7 @@ interface ToolCardProps {
   tool: Tool;
   onDelete?: (id: string) => void;
   onToggleFavorite?: (id: string) => void;
+  onEdit?: (tool: Tool) => void;
 }
 
 /**
@@ -18,7 +19,7 @@ interface ToolCardProps {
  * - Action overlay for favorites and deletion.
  * - Detailed technical scope and direct link to repository.
  */
-const ToolCard = ({ tool, onDelete, onToggleFavorite }: ToolCardProps) => {
+const ToolCard = ({ tool, onDelete, onToggleFavorite, onEdit }: ToolCardProps) => {
   return (
     <motion.div
       layout
@@ -57,22 +58,31 @@ const ToolCard = ({ tool, onDelete, onToggleFavorite }: ToolCardProps) => {
         {/* Action Buttons (Overlay) */}
         <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
+            onClick={() => onEdit?.(tool)}
+            className="p-1.5 rounded bg-surface-container-lowest/80 backdrop-blur-sm border border-outline-variant text-on-surface-variant hover:text-secondary hover:border-secondary transition-all hover:scale-110"
+            title="Edit Tool"
+            aria-label={`Editar ${tool.name}`}
+          >
+            <Edit3 className="w-3.5 h-3.5" />
+          </button>
+          <button
             onClick={() => onToggleFavorite?.(tool.id)}
             className={`p-1.5 rounded bg-surface-container-lowest/80 backdrop-blur-sm border border-outline-variant transition-all hover:scale-110 ${
               tool.isFavorite 
                 ? 'text-primary drop-shadow-[0_0_5px_rgba(0,242,255,0.5)]' 
                 : 'text-on-surface-variant hover:text-primary'
             }`}
+            aria-label={tool.isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
           >
             <Star className={`w-3.5 h-3.5 ${tool.isFavorite ? 'fill-primary' : ''}`} />
           </button>
           <button
             onClick={() => {
-              if (window.confirm(`¿Estás seguro de eliminar ${tool.name}?`)) {
+              if (window.confirm(`¿Estás seguro de eliminar ${tool.name}?`))
                 onDelete?.(tool.id);
-              }
             }}
             className="p-1.5 rounded bg-surface-container-lowest/80 backdrop-blur-sm border border-outline-variant text-on-surface-variant hover:text-error hover:border-error transition-all hover:scale-110"
+            aria-label={`Eliminar ${tool.name}`}
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>

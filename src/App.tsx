@@ -1,68 +1,120 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ToolCard from './components/ToolCard';
 import SearchFilter from './components/SearchFilter';
 import { toolsService } from './services/toolsService';
-import { tools as initialTools } from './data/tools';
 import type { Category, Tool, Pillar } from './types/tool';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import SobreMiPage from './pages/about';
-import CategoriesPage from './pages/CategoriesPage';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+// Importación coherente de páginas
+import DirectorioPage from './pages/Directorio';
+import CategoriasPage from './pages/Categorias';
+
+import SugerirToolModal from './components/Sugerirtoolmodal';
 import { normalizeString } from './utils/stringUtils';
-import { useEffect } from 'react';
 
 function App() {
-  // Cargar directamente desde el servicio para evitar el frame vacío
-  const [tools, setTools] = useState<Tool[]>(() => {
-    const saved = toolsService.getAll();
-    return saved.length > 0 ? saved : initialTools;
-  });
-
-  const location = useLocation();
-
-  // Refrescar herramientas cuando cambia la ubicación (por si se editaron en CategoriesPage)
-  useEffect(() => {
-    setTools([...toolsService.getAll()]);
-  }, [location.pathname]);
-
+  const [tools, setTools] = useState<Tool[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Category | 'All'>('All');
   const [selectedPillar, setSelectedPillar] = useState<Pillar | 'All'>('All');
+  const [editingTool, setEditingTool] = useState<Tool | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAgregarTool = (nuevaTool: Omit<Tool, "id">) => {
-    toolsService.add(nuevaTool);
-    setTools([...toolsService.getAll()]);
+  // Carga asíncrona inicial
+  useEffect(() => {
+    const fetchTools = async () => {
+      setIsLoading(true);
+      try {
+        const data = await toolsService.getAll();
+        setTools(data);
+      } catch (error) {
+        console.error("Error loading tools:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTools();
+  }, []);
+
+  const handleAgregarTool = async (nuevaTool: Omit<Tool, "id">) => {
+    try {
+      await toolsService.add(nuevaTool);
+      const updated = await toolsService.getAll();
+      setTools(updated);
+    } catch (error) {
+      console.error("Error adding tool:", error);
+    }
   };
 
-  const handleEliminarTool = (id: string) => {
-    toolsService.delete(id);
-    setTools([...toolsService.getAll()]);
+  const handleEliminarTool = async (id: string) => {
+    try {
+      await toolsService.delete(id);
+      const updated = await toolsService.getAll();
+      setTools(updated);
+    } catch (error) {
+      console.error("Error deleting tool:", error);
+    }
   };
 
-  const handleToggleFavorite = (id: string) => {
-    toolsService.toggleFavorite(id);
-    setTools([...toolsService.getAll()]);
+  const handleToggleFavorite = async (id: string) => {
+    try {
+      await toolsService.toggleFavorite(id);
+      const updated = await toolsService.getAll();
+      setTools(updated);
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
+
+  const handleUpdateTool = async (id: string, updatedTool: Partial<Tool>) => {
+    try {
+      await toolsService.update(id, updatedTool);
+      const updated = await toolsService.getAll();
+      setTools(updated);
+    } catch (error) {
+      console.error("Error updating tool:", error);
+    }
+  };
+
+  const handleEditTool = (tool: Tool) => {
+    setEditingTool(tool);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmModal = async (toolData: Omit<Tool, "id">) => {
+    if (editingTool) {
+      await handleUpdateTool(editingTool.id, toolData);
+    } else {
+      await handleAgregarTool(toolData);
+    }
+    setEditingTool(null);
+    setIsModalOpen(false);
   };
 
   const filteredTools = useMemo(() => {
-    const normalizedQuery = normalizeString(searchQuery);
-
+    if (!searchQuery && selectedCategory === 'All' && selectedPillar === 'All') return tools;
+    
+    const query = normalizeString(searchQuery).trim();
+    
     return tools.filter((tool) => {
-      const matchesSearch = 
-        normalizeString(tool.name).includes(normalizedQuery) ||
-        normalizeString(tool.description).includes(normalizedQuery) ||
-        (tool.useCase && normalizeString(tool.useCase).includes(normalizedQuery));
+      const matchesCategory = selectedCategory === 'All' || tool.category === selectedCategory;
+      const matchesPillar = selectedPillar === 'All' || tool.pillar === selectedPillar;
       
-      const matchesCategory = 
-        selectedCategory === 'All' || tool.category === selectedCategory;
+      if (!matchesCategory || !matchesPillar) return false;
+      if (!query) return true;
 
-      const matchesPillar = 
-        selectedPillar === 'All' || tool.pillar === selectedPillar;
+      const nameMatch = normalizeString(tool.name).includes(query);
+      const categoryMatch = normalizeString(tool.category).includes(query);
+      const descMatch = normalizeString(tool.description).includes(query);
+      const useCaseMatch = tool.useCase && normalizeString(tool.useCase).includes(query);
+      const tagsMatch = tool.tags?.some(tag => normalizeString(tag).includes(query));
 
-      return matchesSearch && matchesCategory && matchesPillar;
+      return nameMatch || categoryMatch || descMatch || useCaseMatch || tagsMatch;
     });
   }, [tools, searchQuery, selectedCategory, selectedPillar]);
 
@@ -77,7 +129,10 @@ function App() {
   return (
     <div className="min-h-screen bg-background text-on-background flex flex-col">
       <Navbar 
-        onAgregarTool={handleAgregarTool} 
+        onOpenModal={() => {
+          setEditingTool(null);
+          setIsModalOpen(true);
+        }}
       />
       
       <main className="flex-grow">
@@ -87,9 +142,6 @@ function App() {
               <Hero />
               
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-               
-
-                {/* Contenedor del Filtro (Sin sticky) */}
                 <div className="py-4 bg-background -mx-4 px-4 sm:mx-0 sm:px-0">
                   <SearchFilter 
                     searchQuery={searchQuery}
@@ -102,19 +154,33 @@ function App() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-                  <AnimatePresence mode="popLayout">
-                    {sortedTools.map((tool) => (
-                      <ToolCard 
-                        key={tool.id} 
-                        tool={tool} 
-                        onDelete={handleEliminarTool}
-                        onToggleFavorite={handleToggleFavorite}
-                      />
-                    ))}
-                  </AnimatePresence>
+                  {isLoading ? (
+                    Array.from({ length: 8 }).map((_, i) => (
+                      <div key={i} className="bg-surface-800 rounded-xl border border-slate-700/50 p-6 h-64 animate-pulse">
+                        <div className="flex justify-between mb-4">
+                          <div className="w-20 h-4 bg-slate-700 rounded"></div>
+                          <div className="w-8 h-8 bg-slate-700 rounded-full"></div>
+                        </div>
+                        <div className="w-3/4 h-6 bg-slate-700 rounded mb-4"></div>
+                        <div className="w-full h-12 bg-slate-700 rounded"></div>
+                      </div>
+                    ))
+                  ) : (
+                    <AnimatePresence mode="popLayout">
+                      {sortedTools.map((tool) => (
+                        <ToolCard 
+                          key={tool.id} 
+                          tool={tool} 
+                          onDelete={handleEliminarTool}
+                          onToggleFavorite={handleToggleFavorite}
+                          onEdit={() => handleEditTool(tool)}
+                        />
+                      ))}
+                    </AnimatePresence>
+                  )}
                 </div>
 
-                {sortedTools.length === 0 && (
+                {!isLoading && sortedTools.length === 0 && (
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -130,12 +196,20 @@ function App() {
               </div>
             </>
           } />
-          <Route path="/about" element={<SobreMiPage tools={tools} />} />
-          <Route path="/categories" element={<CategoriesPage />} />
-          {/* Ruta de respaldo para cualquier otra URL */}
+         
+          
+          <Route path="/directorio" element={<DirectorioPage tools={tools} onEdit={handleEditTool} onDelete={handleEliminarTool} />} />
+          <Route path="/categorias" element={<CategoriasPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
+      <SugerirToolModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmModal}
+        editingTool={editingTool}
+      />
 
       <footer className="border-t border-surface-variant bg-surface-container-low py-12 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
