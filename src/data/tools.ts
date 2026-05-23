@@ -1,11 +1,11 @@
 import type { Tool } from '../types/tool';
 
 export const tools: Tool[] = [
-  // LLM & RAZONAMIENTO
+  // LLM (Large Language Models)
   {
     id: 'claude',
     name: 'Claude.ai',
-    description: 'Ideal para análisis profundo de código y redacción técnica. Úsalo cuando necesites razonamiento lógico superior y manejo de contextos extensos sin errores.',
+    description: 'Referente en razonamiento lógico y análisis de código extenso. Úsalo cuando necesites precisión técnica superior y una redacción con tono humano y profesional.',
     url: 'https://claude.ai/',
     pillar: 'Work',
     category: 'LLM',
@@ -13,59 +13,123 @@ export const tools: Tool[] = [
   {
     id: 'gemini',
     name: 'Google Gemini',
-    description: 'Integración nativa con el ecosistema Google. Úsalo para procesar múltiples formatos (video/audio/texto) simultáneamente gracias a su ventana de contexto masiva.',
+    description: 'IA multimodal con ventana de contexto masiva. Úsala para analizar múltiples documentos extensos o videos largos de una sola vez dentro del ecosistema Google.',
     url: 'https://gemini.google.com/',
+    pillar: 'Work',
+    category: 'LLM',
+  },
+  {
+    id: 'chatgpt',
+    name: 'ChatGPT',
+    description: 'El asistente más versátil para tareas generales y automatización. Úsalo por su ecosistema de GPTs personalizados y sus capacidades avanzadas de visión y voz.',
+    url: 'https://chatgpt.com/',
     pillar: 'Work',
     category: 'LLM',
   },
   {
     id: 'grok',
     name: 'Grok',
-    description: 'IA con acceso a datos en tiempo real de X. Úsala cuando necesites investigar tendencias actuales o eventos que están ocurriendo en el momento exacto.',
+    description: 'IA conectada en tiempo real a la plataforma X. Úsala para investigar tendencias actuales, noticias de última hora y opiniones en tiempo real sobre tecnología.',
     url: 'https://x.ai/',
     pillar: 'Work',
     category: 'LLM',
   },
 
-  // CODING & IA AGENTS
+  // CODING & AI AGENTS
   {
     id: 'deepseek',
     name: 'DeepSeek',
-    description: 'Modelo de código abierto optimizado para desarrollo. Úsalo como alternativa costo-eficiente para tareas de codificación pura y razonamiento matemático complejo.',
+    description: 'Modelos de código abierto optimizados para desarrollo y matemáticas. Úsalo como una alternativa potente y eficiente para tareas de codificación pura.',
     url: 'https://deepseek.com/',
+    pillar: 'Work',
+    category: 'Coding',
+  },
+  {
+    id: 'cursor',
+    name: 'Cursor',
+    description: 'El IDE de IA definitivo basado en VS Code. Úsalo para programar a la velocidad del pensamiento con una IA que entiende todo tu repositorio local.',
+    url: 'https://cursor.com/',
+    pillar: 'Work',
+    category: 'Coding',
+  },
+  {
+    id: 'windsurf',
+    name: 'Windsurf',
+    description: 'IDE con agentes de IA autónomos. Úsalo para delegar tareas de refactorización o construcción de módulos completos mientras supervisas el flujo global.',
+    url: 'https://codeium.com/windsurf',
     pillar: 'Work',
     category: 'Coding',
   },
   {
     id: 'bolt-new',
     name: 'Bolt.new',
-    description: 'StackBlitz impulsado por IA. Úsalo para prototipar aplicaciones Fullstack completas en el navegador desde un prompt, con despliegue instantáneo.',
+    description: 'Generador de aplicaciones Fullstack instantáneo. Úsalo para crear, ejecutar y desplegar prototipos web completos directamente desde un prompt en el navegador.',
     url: 'https://bolt.new/',
-    pillar: 'Work',
-    category: 'Coding',
-  },
-  {
-    id: 'trae',
-    name: 'Trae',
-    description: 'IDE de IA adaptativo de ByteDance. Úsalo cuando busques una experiencia de desarrollo fluida que aprenda de tu estilo de programación local.',
-    url: 'https://www.trae.sh/',
     pillar: 'Work',
     category: 'Coding',
   },
   {
     id: 'lovable',
     name: 'Lovable',
-    description: 'Ingeniero de software GPT-4o. Úsalo para construir y enviar aplicaciones web de alta calidad visual y funcional a partir de lenguaje natural.',
+    description: 'Ingeniero de software IA de alto nivel. Úsalo para transformar descripciones de lenguaje natural en aplicaciones web funcionales y estéticamente pulidas.',
     url: 'https://lovable.dev/',
     pillar: 'Work',
     category: 'Coding',
   },
+  {
+    id: 'trae',
+    name: 'Trae',
+    description: 'IDE adaptativo que evoluciona con tu estilo. Úsalo para una experiencia de desarrollo personalizada que optimiza tus flujos de trabajo repetitivos.',
+    url: 'https://www.trae.sh/',
+    pillar: 'Work',
+    category: 'Coding',
+  },
 
-  // DEVOPS & INFRASTRUCTURE
+  // DEVOPS & CLOUD INFRASTRUCTURE
+  {
+    id: 'git-gh',
+    name: 'GitHub',
+    description: 'Estándar de la industria para control de versiones y CI/CD. Úsalo como el corazón de tu flujo de trabajo DevOps y colaboración en equipo.',
+    url: 'https://github.com/',
+    pillar: 'Work',
+    category: 'DevOps',
+  },
+  {
+    id: 'gitlab',
+    name: 'GitLab',
+    description: 'Plataforma integral de DevOps con enfoque en seguridad. Úsala cuando necesites un ciclo de vida de software completo en una sola aplicación.',
+    url: 'https://gitlab.com/',
+    pillar: 'Work',
+    category: 'DevOps',
+  },
+  {
+    id: 'terraform',
+    name: 'Terraform',
+    description: 'Infraestructura como Código (IaC). Úsalo para definir y aprovisionar infraestructura en cualquier nube de forma consistente y reproducible.',
+    url: 'https://terraform.io/',
+    pillar: 'Work',
+    category: 'DevOps',
+  },
+  {
+    id: 'kubernetes',
+    name: 'Kubernetes',
+    description: 'Orquestación de contenedores a escala. Úsalo para gestionar el despliegue, escalado y la disponibilidad de aplicaciones en contenedores.',
+    url: 'https://kubernetes.io/',
+    pillar: 'Work',
+    category: 'Cloud Infrastructure',
+  },
+  {
+    id: 'docker',
+    name: 'Docker',
+    description: 'Contenedores ligeros y portátiles. Úsalo para asegurar que tu aplicación funcione exactamente igual en desarrollo, testing y producción.',
+    url: 'https://docker.com/',
+    pillar: 'Work',
+    category: 'DevOps',
+  },
   {
     id: 'postgres-sandbox',
     name: 'Postgres Sandbox',
-    description: 'Instancias efímeras de base de datos. Úsalo para testing rápido de esquemas o validación de queries SQL sin ensuciar tus entornos locales o de dev.',
+    description: 'Entorno efímero de PostgreSQL. Úsalo para prototipar bases de datos y probar queries SQL complejas sin configurar servidores locales.',
     url: 'https://postgresandbox.com/',
     pillar: 'Work',
     category: 'DevOps',
@@ -73,7 +137,7 @@ export const tools: Tool[] = [
   {
     id: 'google-idx',
     name: 'Project IDX',
-    description: 'Entorno de desarrollo multi-plataforma basado en la nube. Úsalo para configurar workspaces consistentes con emuladores de Android/iOS integrados.',
+    description: 'Workspace en la nube basado en IA. Úsalo para configurar entornos de desarrollo consistentes con acceso a emuladores móviles desde cualquier sitio.',
     url: 'https://idx.google.com/',
     pillar: 'Work',
     category: 'Cloud Infrastructure',
@@ -81,35 +145,101 @@ export const tools: Tool[] = [
   {
     id: 'railway',
     name: 'Railway',
-    description: 'Infraestructura simplificada. Úsalo cuando necesites desplegar microservicios o bases de datos con configuración cero y escalado automático.',
+    description: 'Despliegue simplificado de infraestructura. Úsalo para subir tus apps y bases de datos a producción en segundos con configuración mínima.',
     url: 'https://railway.app/',
     pillar: 'Work',
     category: 'Cloud Infrastructure',
   },
 
-  // AUTOMATION & APIS
+  // AUTOMATION
   {
     id: 'n8n',
     name: 'n8n',
-    description: 'Automatización basada en nodos auto-hospedable. Úsalo para orquestar flujos de datos complejos que requieren privacidad y lógica técnica avanzada.',
+    description: 'Automatización de flujos basada en nodos. Úsala para conectar servicios técnicos y crear procesos complejos que puedes auto-hospedar.',
     url: 'https://n8n.io/',
+    pillar: 'Work',
+    category: 'Automation',
+  },
+  {
+    id: 'zapier',
+    name: 'Zapier',
+    description: 'El estándar de oro en automatización no-code. Úsalo para conectar miles de apps comerciales de forma rápida y sencilla sin escribir una línea de código.',
+    url: 'https://zapier.com/',
     pillar: 'Work',
     category: 'Automation',
   },
   {
     id: 'make',
     name: 'Make',
-    description: 'Interfaz visual para integraciones. Úsalo para conectar APIs de forma rápida y visual cuando la velocidad de entrega sea más crítica que el código puro.',
+    description: 'Automatización visual con lógica avanzada. Úsala cuando necesites flujos de trabajo con ramificaciones complejas y manipulación de datos detallada.',
     url: 'https://make.com/',
     pillar: 'Work',
     category: 'Automation',
   },
 
-  // DIAGRAMS & IDEATION
+  // TESTING & APIS
+  {
+    id: 'postman',
+    name: 'Postman',
+    description: 'Plataforma líder para desarrollo de APIs. Úsala para diseñar, probar y documentar tus endpoints de forma colaborativa y eficiente.',
+    url: 'https://postman.com/',
+    pillar: 'Work',
+    category: 'Testing/APIs',
+  },
+  {
+    id: 'playwright',
+    name: 'Playwright',
+    description: 'Testing end-to-end moderno. Úsalo para automatizar pruebas en navegadores reales con una API rápida, confiable y capaz de manejar apps modernas.',
+    url: 'https://playwright.dev/',
+    pillar: 'Work',
+    category: 'Testing/APIs',
+  },
+  {
+    id: 'hoppscotch',
+    name: 'Hoppscotch',
+    description: 'Alternativa open-source a Postman. Úsala para pruebas de API ligeras, rápidas y centradas en la privacidad directamente desde tu navegador.',
+    url: 'https://hoppscotch.io/',
+    pillar: 'Work',
+    category: 'Testing/APIs',
+  },
+
+  // DESIGN & DIAGRAMS
+  {
+    id: 'gamma-app',
+    name: 'Gamma.app',
+    description: 'Creación de presentaciones y webs con IA. Úsala para transformar documentos o ideas en diapositivas visualmente impactantes en segundos.',
+    url: 'https://gamma.app/',
+    pillar: 'Business',
+    category: 'Design',
+  },
+  {
+    id: 'figma',
+    name: 'Figma',
+    description: 'Diseño de interfaces colaborativo. Úsalo para prototipar UIs de alta fidelidad y colaborar en tiempo real con otros diseñadores y desarrolladores.',
+    url: 'https://figma.com/',
+    pillar: 'Business',
+    category: 'Design',
+  },
+  {
+    id: 'mermaid',
+    name: 'Mermaid Live Editor',
+    description: 'Diagramas a partir de código. Úsalo para generar diagramas de flujo, secuencia y arquitectura integrables directamente en tu documentación Markdown.',
+    url: 'https://mermaid.live/',
+    pillar: 'Work',
+    category: 'Diagrams',
+  },
+  {
+    id: 'excalidraw',
+    name: 'Excalidraw',
+    description: 'Pizarra virtual con estilo manual. Úsala para sketches rápidos, diagramas informales y sesiones de brainstorming visual con estética de dibujo.',
+    url: 'https://excalidraw.com/',
+    pillar: 'Work',
+    category: 'Diagrams',
+  },
   {
     id: 'rapidchart',
     name: 'RapidChart',
-    description: 'Generación de diagramas técnicos con IA. Úsalo para documentar arquitecturas de sistemas y flujos de datos en segundos a partir de texto.',
+    description: 'Arquitectura de sistemas visualizada por IA. Úsala para convertir descripciones técnicas en diagramas de infraestructura profesionales al instante.',
     url: 'https://rapidchart.io/',
     pillar: 'Work',
     category: 'Diagrams',
@@ -117,33 +247,17 @@ export const tools: Tool[] = [
   {
     id: 'xmind',
     name: 'Xmind',
-    description: 'Mapas mentales para estructurar ideas. Úsalo durante la fase de descubrimiento del proyecto para organizar requisitos y jerarquías de información.',
+    description: 'Estructuración de ideas mediante mapas mentales. Úsalo para organizar requisitos de proyectos y jerarquías de información en fases tempranas.',
     url: 'https://xmind.app/',
     pillar: 'Work',
     category: 'Diagrams',
   },
 
-  // DESIGN & ASSETS
-  {
-    id: 'tailorbrands',
-    name: 'Tailor Brands',
-    description: 'Branding automatizado. Úsalo para generar identidades visuales completas y logotipos para tus proyectos personales o MVPs en minutos.',
-    url: 'https://tailorbrands.com/',
-    pillar: 'Business',
-    category: 'Design',
-  },
-  {
-    id: 'ideogram',
-    name: 'Ideogram AI',
-    description: 'Generador de imágenes con tipografía perfecta. Úsalo para crear pósters, banners o assets de UI donde el texto sea el elemento central.',
-    url: 'https://ideogram.ai/',
-    pillar: 'Business',
-    category: 'Image Generation',
-  },
+  // ASSET GENERATION
   {
     id: 'unsplash',
     name: 'Unsplash',
-    description: 'Biblioteca de imágenes de alta resolución. Úsalo para encontrar fotografía profesional gratuita que eleve la estética de tus landing pages.',
+    description: 'Fotografía profesional gratuita. Úsala como tu fuente principal de imágenes de alta resolución para elevar el diseño de tus aplicaciones.',
     url: 'https://unsplash.com/',
     pillar: 'Business',
     category: 'Asset Generation',
@@ -151,17 +265,41 @@ export const tools: Tool[] = [
   {
     id: 'pexels',
     name: 'Pexels',
-    description: 'Stock de video e imagen gratuito. Úsalo para obtener recursos multimedia de fondo (hero videos) con licencias permisivas para proyectos web.',
+    description: 'Stock de video e imagen gratuito. Úsalo para encontrar clips de video de alta calidad para fondos de sitios web o contenido multimedia.',
     url: 'https://pexels.com/',
     pillar: 'Business',
     category: 'Asset Generation',
   },
+  {
+    id: 'tailorbrands',
+    name: 'Tailor Brands',
+    description: 'Identidad visual automatizada. Úsala para generar logotipos y kits de marca completos para tus nuevos proyectos o MVPs en minutos.',
+    url: 'https://tailorbrands.com/',
+    pillar: 'Business',
+    category: 'Design',
+  },
 
-  // RESEARCH & ACADEMIC
+  // PRODUCTIVITY & RESEARCH
+  {
+    id: 'notion',
+    name: 'Notion',
+    description: 'El hub central de información. Úsalo para organizar notas, tareas, wikis y bases de datos personales con asistencia de IA integrada.',
+    url: 'https://notion.so/',
+    pillar: 'Work',
+    category: 'Productivity',
+  },
+  {
+    id: 'obsidian',
+    name: 'Obsidian',
+    description: 'Gestión de conocimiento privada basada en Markdown. Úsala para construir un "segundo cerebro" local con conexiones profundas entre tus notas.',
+    url: 'https://obsidian.md/',
+    pillar: 'Study',
+    category: 'Productivity',
+  },
   {
     id: 'perplexity',
     name: 'Perplexity',
-    description: 'Buscador con IA y fuentes citadas. Úsalo para fact-checking técnico y para obtener respuestas rápidas con referencias reales de la web.',
+    description: 'Buscador inteligente con fuentes verificadas. Úsalo para investigaciones rápidas donde necesites respuestas precisas y enlaces directos a la fuente.',
     url: 'https://perplexity.ai/',
     pillar: 'Study',
     category: 'Research',
@@ -169,27 +307,113 @@ export const tools: Tool[] = [
   {
     id: 'futurepedia',
     name: 'Futurepedia',
-    description: 'Directorio de herramientas IA. Úsalo para mantenerte actualizado sobre las últimas innovaciones y encontrar soluciones específicas a problemas nuevos.',
+    description: 'El directorio de herramientas IA más completo. Úsalo para descubrir nuevas utilidades que optimicen tus flujos de trabajo diarios.',
     url: 'https://futurepedia.io/',
     pillar: 'Study',
     category: 'Research',
   },
+
+  // ACADEMIC & LEARNING
+  {
+    id: 'notebooklm',
+    name: 'NotebookLM',
+    description: 'Análisis de documentos personales con IA. Úsalo para sintetizar información de tus propios PDFs y generar resúmenes o podcasts explicativos.',
+    url: 'https://notebooklm.google.com/',
+    pillar: 'Study',
+    category: 'Academic',
+  },
+  {
+    id: 'consensus',
+    name: 'Consensus',
+    description: 'Búsqueda científica basada en evidencia. Úsalo para encontrar respuestas fundamentadas en estudios de investigación reales y verificados.',
+    url: 'https://consensus.app/',
+    pillar: 'Study',
+    category: 'Academic',
+  },
   {
     id: 'codedex',
     name: 'Codedex',
-    description: 'Plataforma de aprendizaje gamificada. Úsala cuando necesites aprender un nuevo lenguaje o framework de forma interactiva y estructurada.',
+    description: 'Aprendizaje de programación gamificado. Úsalo para dominar nuevos lenguajes de forma interactiva y divertida, ideal para expandir tu stack técnico.',
     url: 'https://codedex.io/',
     pillar: 'Study',
     category: 'Academic',
   },
 
-  // MULTIMEDIA IA
+  // IMAGE GENERATION
+  {
+    id: 'midjourney',
+    name: 'Midjourney',
+    description: 'Generación de imágenes con la mayor calidad artística del mercado. Úsalo para crear visuales únicos que destaquen por su estética superior.',
+    url: 'https://midjourney.com/',
+    pillar: 'Business',
+    category: 'Image Generation',
+  },
+  {
+    id: 'leonardo-ai',
+    name: 'Leonardo.ai',
+    description: 'Control total sobre la generación de imágenes. Úsalo para entrenar modelos propios o utilizar estilos específicos con herramientas de edición integradas.',
+    url: 'https://leonardo.ai/',
+    pillar: 'Business',
+    category: 'Image Generation',
+  },
+  {
+    id: 'ideogram',
+    name: 'Ideogram AI',
+    description: 'Especialista en tipografía e imágenes de diseño. Úsalo cuando necesites que el texto dentro de la imagen sea legible y estéticamente perfecto.',
+    url: 'https://ideogram.ai/',
+    pillar: 'Business',
+    category: 'Image Generation',
+  },
+
+  // AUDIO/VIDEO
+  {
+    id: 'runway-ml',
+    name: 'Runway',
+    description: 'Edición y generación de video profesional con IA. Úsala para efectos visuales avanzados, eliminación de fondos y creación de clips de video desde texto.',
+    url: 'https://runwayml.com/',
+    pillar: 'Business',
+    category: 'Audio/Video',
+  },
+  {
+    id: 'elevenlabs',
+    name: 'ElevenLabs',
+    description: 'Síntesis de voz y clonación de audio líder. Úsala para generar narraciones con una calidad humana indistinguible en múltiples idiomas.',
+    url: 'https://elevenlabs.io/',
+    pillar: 'Business',
+    category: 'Audio/Video',
+  },
   {
     id: 'fliki',
     name: 'Fliki',
-    description: 'Conversión de texto a video con voces realistas. Úsalo para crear contenido multimedia rápido para redes sociales o tutoriales de producto.',
+    description: 'Creación rápida de video para redes sociales. Úsala para convertir guiones o posts de blog en videos narrados con assets de stock en minutos.',
     url: 'https://fliki.ai/',
     pillar: 'Business',
     category: 'Audio/Video',
+  },
+
+  // AI AGENTS
+  {
+    id: 'crewai',
+    name: 'CrewAI',
+    description: 'Orquestación de equipos de agentes autónomos. Úsalo para crear sistemas donde múltiples IAs colaboran en tareas complejas de principio a fin.',
+    url: 'https://crewai.com/',
+    pillar: 'Work',
+    category: 'AI Agents',
+  },
+  {
+    id: 'langchain',
+    name: 'LangChain',
+    description: 'Framework estándar para apps con LLMs. Úsalo para construir aplicaciones que conecten modelos de lenguaje con datos externos y herramientas.',
+    url: 'https://langchain.com/',
+    pillar: 'Work',
+    category: 'AI Agents',
+  },
+  {
+    id: 'voiceflow',
+    name: 'Voiceflow',
+    description: 'Diseño y despliegue de agentes conversacionales. Úsalo para construir chatbots avanzados y asistentes de voz con una interfaz visual potente.',
+    url: 'https://voiceflow.com/',
+    pillar: 'Work',
+    category: 'AI Agents',
   }
 ];
